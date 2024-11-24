@@ -1,6 +1,6 @@
 // Services hover effect
 document.querySelectorAll(".service-item").forEach((item) => {
-  item.addEventListener("mouseenter", function (e) {
+  item.addEventListener("mouseenter", function (_e) {
     const hoverInfo = document.querySelector(".hover-info");
     hoverInfo.innerHTML = this.getAttribute("data-info"); // Use innerHTML for multiline
     hoverInfo.style.display = "block";
