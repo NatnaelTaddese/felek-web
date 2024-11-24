@@ -1,31 +1,44 @@
-let lastScrollTop = 0;
-const resizeDiv = document.getElementById("resizeDiv");
-let scale = 1; // Initial scale (100%)
+export default function attach_hero_animation() {
+  let lastScrollTop = 0;
+  const resizeDiv = document.getElementById("resizeDiv");
+  if (!resizeDiv) {
+    console.error("Element with id 'resizeDiv' not found.");
+    return;
+  }
+  let scale = 1; // Initial scale (100%)
 
-// Set bounds for minimum and maximum scale values
-const minScale = 1; // Minimum size is 100% (original size)
-const maxScale = 1.6; // 150% of original size
-
-globalThis.addEventListener("scroll", () => {
-  const scrollTop =
-    globalThis.pageYOffset || document.documentElement.scrollTop;
-
-  if (scrollTop > lastScrollTop) {
-    // Scrolling down, increase scale
-    scale = Math.min(scale + 0.05, maxScale); // Increment but cap at maxScale
-  } else {
-    // Scrolling up, decrease scale but don't go below 1
-    scale = Math.max(scale - 0.05, minScale); // Decrease but not below minScale
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
   }
 
-  resizeDiv.style.transform = `scale(${scale})`;
+  globalThis.addEventListener(
+    "scroll",
+    debounce(() => {
+      const minScale = 1; // Minimum size is 100% (original size)
+      const maxScale = 1.6; // 150% of original size
 
-  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Prevent negative scrolling values
-});
+      const scrollTop =
+        globalThis.scrollY || document.documentElement.scrollTop;
 
-const checkbox = document.getElementById("menu-toggle");
-const dropdown = document.querySelector(".mobileDropdown");
+      if (scrollTop > lastScrollTop) {
+        // Scrolling down, increase scale
+        scale = Math.min(scale + 0.05, maxScale); // Increment but cap at maxScale
+      } else {
+        // Scrolling up, decrease scale
+        scale = Math.max(scale - 0.05, minScale); // Decrement but cap at minScale
+      }
 
-checkbox.addEventListener("change", () => {
-  dropdown.style.display = checkbox.checked ? "flex" : "none";
-});
+      resizeDiv.style.transform = `scale(${scale})`;
+
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Prevent negative scrolling values
+    }, 100)
+  ); // Adjust the debounce delay as needed
+}

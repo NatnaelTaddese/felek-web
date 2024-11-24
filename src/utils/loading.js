@@ -1,14 +1,20 @@
 export default function load_assets() {
-  document.addEventListener("DOMContentLoaded", () => {
-    // Wait for all assets to load
-    globalThis.addEventListener("load", () => {
-      const loadingScreen = document.getElementById("loading-screen");
-      const heroContainer = document.querySelector(".hero-container");
+  // Wait for all fonts and assets to load
+  const waitForFontsAndAssets = Promise.all([
+    new Promise((resolve) => globalThis.addEventListener("load", resolve)), // Wait for window load event
+    document.fonts.ready, // Wait for fonts to load
+  ]);
 
-      // Hide the loading screen
-      loadingScreen.classList.add("hidden");
+  waitForFontsAndAssets.then(() => {
+    const loadingScreen = document.getElementById("loading-screen");
+    const body = document.querySelector("body");
 
-      heroContainer.classList.remove("hidden");
-    });
+    // Hide the loading screen with a smooth transition
+    loadingScreen.classList.add("hidden");
+
+    // Allow scrolling after the loading screen disappears
+    setTimeout(() => {
+      body.style.overflow = "auto";
+    }, 500); // Matches the CSS transition duration
   });
 }
