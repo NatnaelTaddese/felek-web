@@ -6,8 +6,8 @@ let scale = 1; // Initial scale (100%)
 const minScale = 1; // Minimum size is 100% (original size)
 const maxScale = 1.6; // 150% of original size
 
-window.addEventListener("scroll", () => {
-  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+globalThis.addEventListener("scroll", () => {
+  let scrollTop = globalThis.pageYOffset || document.documentElement.scrollTop;
 
   if (scrollTop > lastScrollTop) {
     // Scrolling down, increase scale
