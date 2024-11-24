@@ -4,6 +4,8 @@ import "./utils/logo_scale_up.js";
 
 import DOMPurify from "dompurify";
 import load_assets from "./utils/loading.js";
+import attach_hero_animation from "./utils/logo_scale_up.js";
+import attach_service_hover from "./utils/service_section.js";
 
 const loadHtmlComponent = async (id, filePath) => {
   try {
@@ -49,6 +51,8 @@ console.log("Loading components...");
 
   // Initialize assets after components are loaded
   load_assets();
+  attach_hero_animation();
+  // attach_service_hover();
   try {
     attach_hero_animation();
   } catch (error) {
