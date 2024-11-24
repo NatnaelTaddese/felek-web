@@ -16,6 +16,13 @@
     /* Smooth fade-out */
 }
 
+#loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+}
+
+
 /* Spinner Styles */
 .spinner {
     width: 50px;

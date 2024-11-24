@@ -13,7 +13,21 @@ const loadHtmlComponent = async (id, filePath) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     console.log("Component loaded:", filePath);
-    document.getElementById(id).innerHTML = DOMPurify.sanitize(html);
+
+    // Sanitize the loaded HTML
+    const sanitizedHtml = DOMPurify.sanitize(html);
+
+    // Create a temporary container to parse the HTML string
+    const tempContainer = document.createElement("div");
+    tempContainer.innerHTML = sanitizedHtml;
+
+    // Replace the placeholder element with the parsed content
+    const placeholder = document.getElementById(id);
+    if (placeholder) {
+      placeholder.replaceWith(...tempContainer.childNodes);
+    } else {
+      console.warn(`Placeholder element with id "${id}" not found.`);
+    }
   } catch (error) {
     console.error("Error loading component:", error);
   }
@@ -35,5 +49,15 @@ console.log("Loading components...");
 
   // Initialize assets after components are loaded
   load_assets();
-  attach_hero_animation();
+  try {
+    attach_hero_animation();
+  } catch (error) {
+    console.error("Error in attach_hero_animation:", error);
+  }
+
+  try {
+    attach_service_hover();
+  } catch (error) {
+    console.error("Error in attach_service_hover:", error);
+  }
 })();

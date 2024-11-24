@@ -1,7 +1,12 @@
 export default function load_assets() {
-  // Wait for all fonts and assets to load
   const waitForFontsAndAssets = Promise.all([
-    new Promise((resolve) => globalThis.addEventListener("load", resolve)), // Wait for window load event
+    new Promise((resolve) => {
+      if (document.readyState === "complete") {
+        resolve();
+      } else {
+        window.addEventListener("load", resolve); // Ensure it fires if not already loaded
+      }
+    }),
     document.fonts.ready, // Wait for fonts to load
   ]);
 
