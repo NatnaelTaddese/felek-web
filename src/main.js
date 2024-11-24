@@ -1,24 +1,22 @@
-import "./style.css";
-import javascriptLogo from "../javascript.svg";
-import viteLogo from "/vite.svg";
-import { setupCounter } from "../counter.js";
+import "./utils/logo_scale_up.js";
+import "./utils/service_section.js";
+import DOMPurify from "dompurify";
 
-document.querySelector("#app").innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`;
+const loadHtmlComponent = async (id, filePath) => {
+  try {
+    const response = await fetch(filePath);
+    const html = await response.text();
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    document.getElementById(id).innerHTML = DOMPurify.sanitize(html);
+  } catch (error) {
+    console.error("Error loading component:", error);
+  }
+};
 
-setupCounter(document.querySelector("#counter"));
+loadHtmlComponent("header", "/src/components/header.html");
+loadHtmlComponent("hero", "/src/components/hero.html");
+loadHtmlComponent("services", "/src/components/services.html");
+loadHtmlComponent("events", "/src/components/events.html");
+loadHtmlComponent("footer", "/src/components/footer.html");
