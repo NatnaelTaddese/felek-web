@@ -4,7 +4,7 @@ export default function load_assets() {
       if (document.readyState === "complete") {
         resolve();
       } else {
-        window.addEventListener("load", resolve); // Ensure it fires if not already loaded
+        globalThis.addEventListener("load", resolve); // Ensure it fires if not already loaded
       }
     }),
     document.fonts.ready, // Wait for fonts to load
