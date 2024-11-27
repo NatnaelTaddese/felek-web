@@ -307,8 +307,16 @@ a {
 }
 
 .hero-container {
-    height: 110vh;
+    height: 70vh;
 }
+
+@media (min-width: 1000px) {
+    .hero-container {
+        height: 100vh;
+    }
+}
+
+
 
 .hero {
     background-image: url('/img/Figure-Seven.jpg');
